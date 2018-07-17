@@ -48,47 +48,47 @@ public class RabbitmqConfig {
 	private String password;
 	@Value("${spring.rabbitmq.addresses}")
 	private String addresses;
-//	@Value("${spring.rabbitmq.vhost}")
-//	private String vhost;
+	@Value("${spring.rabbitmq.vhost}")
+	private String vhost;
 
 	@Autowired
 	private ConfirmCallback confirmCallbackListener;
-	@Autowired
-	private ConfirmCallback confirmCallbackListener2;
+//	@Autowired
+//	private ConfirmCallback confirmCallbackListener2;
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	// 创建队列
-	@Bean(value = "directQueue1")
-	public Queue queue1() {
-		return new Queue(testDirectQueue1);// 默认已经开启持久化了
-	}
-
-	@Bean(value = "directQueue2")
-	public Queue queue2() {
-		return new Queue(testDirectQueue2);
-//		return new Queue("topic.message3",false);
-	}
-
-	@Bean(value = "topicQueue1")
-	public Queue queue3() {
-		return new Queue(testTopicQueue1);
-	}
-
-	@Bean(value = "topicQueue2")
-	public Queue queue4() {
-		return new Queue(testTopicQueue2);
-	}
-
-	@Bean(value = "fanoutQueue1")
-	public Queue queue5() {
-		return new Queue(testFanoutQueue1);
-	}
-
-	@Bean(value = "fanoutQueue2")
-	public Queue queue6() {
-		return new Queue(testFanoutQueue2);
-	}
+//	// 创建队列
+//	@Bean(value = "directQueue1")
+//	public Queue queue1() {
+//		return new Queue(testDirectQueue1);// 默认已经开启持久化了
+//	}
+//
+//	@Bean(value = "directQueue2")
+//	public Queue queue2() {
+//		return new Queue(testDirectQueue2);
+////		return new Queue("topic.message3",false);
+//	}
+//
+//	@Bean(value = "topicQueue1")
+//	public Queue queue3() {
+//		return new Queue(testTopicQueue1);
+//	}
+//
+//	@Bean(value = "topicQueue2")
+//	public Queue queue4() {
+//		return new Queue(testTopicQueue2);
+//	}
+//
+//	@Bean(value = "fanoutQueue1")
+//	public Queue queue5() {
+//		return new Queue(testFanoutQueue1);
+//	}
+//
+//	@Bean(value = "fanoutQueue2")
+//	public Queue queue6() {
+//		return new Queue(testFanoutQueue2);
+//	}
 
 //	// 创建一个 direct 类型的交换器
 //	@Bean
@@ -107,23 +107,23 @@ public class RabbitmqConfig {
 //		return BindingBuilder.bind(queue).to(exchange).with("weather");
 //	}
 
-	// 创建一个 topic 类型的交换器
-	@Bean
-	public TopicExchange topicExchange() {
-		return new TopicExchange(testTopicExchange);
-//		 return new TopicExchange(name, durable, autoDelete);
-	}
-
-	// 使用路由键（routingKey）把队列（Queue）绑定到交换器（Exchange）
-	@Bean
-	public Binding topicBinding1(@Qualifier(value = "topicQueue1") Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with("usa.#");
-	}
-
-	@Bean
-	public Binding topicBinding2(@Qualifier(value = "topicQueue2") Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with("news.#");// 不匹配
-	}
+//	// 创建一个 topic 类型的交换器
+//	@Bean
+//	public TopicExchange topicExchange() {
+//		return new TopicExchange(testTopicExchange);
+////		 return new TopicExchange(name, durable, autoDelete);
+//	}
+//
+//	// 使用路由键（routingKey）把队列（Queue）绑定到交换器（Exchange）
+//	@Bean
+//	public Binding topicBinding1(@Qualifier(value = "topicQueue1") Queue queue, TopicExchange exchange) {
+//		return BindingBuilder.bind(queue).to(exchange).with("usa.#");
+//	}
+//
+//	@Bean
+//	public Binding topicBinding2(@Qualifier(value = "topicQueue2") Queue queue, TopicExchange exchange) {
+//		return BindingBuilder.bind(queue).to(exchange).with("news.#");// 不匹配
+//	}
 
 //	// 创建一个 fanout 类型的交换器
 //	@Bean
@@ -148,22 +148,25 @@ public class RabbitmqConfig {
 		connectionFactory.setPassword(password);
 		connectionFactory.setPublisherConfirms(true);// 消息确认机制
 		connectionFactory.setAddresses(addresses);// 集群的配置 地址用逗号隔开
-//		 connectionFactory.setVirtualHost(vhost);
+		 connectionFactory.setVirtualHost(vhost);
 		return connectionFactory;
 	}
 
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+		System.out.println("rabbitTemplate============================================");
 		rabbitTemplate.setConfirmCallback(confirmCallbackListener);
 		return rabbitTemplate;
 	}
 	
-	@Bean
-	public RabbitTemplate rabbitTemplate2(ConnectionFactory connectionFactory) {
-		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-		rabbitTemplate.setConfirmCallback(confirmCallbackListener2);
-		return rabbitTemplate;
-	}
+	    
+	
+//	@Bean
+//	public RabbitTemplate rabbitTemplate2(ConnectionFactory connectionFactory) {
+//		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+//		rabbitTemplate.setConfirmCallback(confirmCallbackListener2);
+//		return rabbitTemplate;
+//	}
 
 }

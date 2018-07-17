@@ -12,7 +12,7 @@ public class ConfirmCallbackListener implements ConfirmCallback {
 
 	@Override
 	public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-
+		System.out.println("===========================================2=====================================");
 		if (ack) {
 			if (null != correlationData) {
 				logger.info("消息发送成功-------------------------->message:" + correlationData.getId());
@@ -20,7 +20,7 @@ public class ConfirmCallbackListener implements ConfirmCallback {
 		} else {
 			logger.info("消息发送失败--------------------------->message:" + correlationData.getId() + " cause:" + cause);
 		}
-
+		System.out.println("===========================================2=====================================");
 	}
 
 }
